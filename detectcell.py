@@ -350,187 +350,188 @@ class Ui_Dialog(object):
             if not take_lymphocyte:
                 msg = QMessageBox()
                 msg.setIcon(QMessageBox.Information)
-                msg.setText("You should make a detection for white blood cell first.")
+                msg.setText("You should make a detection for white blood cell first press White button.")
                 msg.setWindowTitle("Information")
                 msg.exec_()
                 
                
                 
             
-            main_folder_path = "cell_application/output"
-            lastfolder_path=get_most_recently_modified_folder(main_folder_path)
-           
+            else :
+                main_folder_path = "cell_application/output"
+                lastfolder_path=get_most_recently_modified_folder(main_folder_path)
             
-            txt_file = glob.glob(os.path.join(lastfolder_path+"/labels/", '*.txt'))[0]
-            
-            df = pd.read_csv(txt_file,delimiter=' ', header=None)
-            df.columns = ['label', 'x_center', 'y_center', 'width', 'height']
-            df=df[df['label']==4]
-            imagename=txt_file[txt_file.rfind('\\')+1:txt_file.find('.')]
-            imagepath=os.path.join("cell_application/uploaded_images",imagename)
-            
-            image = Image.open(imagepath+".jpg")
-            npimage=np.array(image)
-            # Get the original size of the image
-            ma=max(npimage.shape[0],npimage.shape[1])
-            yolo_img_resize= (ma*2144) //2592
-            yolo_img_resize=(yolo_img_resize//32)*32 +(yolo_img_resize%32!=0)*32
-          
-            height, width = yolo_img_resize,yolo_img_resize
-            height_i, width_i=npimage.shape[:2]
-         
-            height_scale = height_i/height
-            width_scale=width_i/width
-            df['x_center'] *= width_i
-            df['y_center'] *= height_i
-            df['width'] *= width_i
-            df['height'] *= height_i
                 
-            # Calculate the top-left and bottom-right corners of the bounding boxes
-            df1 = pd.DataFrame()
-            df1['xmin'] = df['x_center'] - df['width'] / 2
-            df1['ymin'] = df['y_center'] - df['height'] / 2
-            df1['xmax'] = df['x_center'] + df['width'] / 2
-            df1['ymax'] = df['y_center'] + df['height'] / 2
+                txt_file = glob.glob(os.path.join(lastfolder_path+"/labels/", '*.txt'))[0]
+                
+                df = pd.read_csv(txt_file,delimiter=' ', header=None)
+                df.columns = ['label', 'x_center', 'y_center', 'width', 'height']
+                df=df[df['label']==4]
+                imagename=txt_file[txt_file.rfind('\\')+1:txt_file.find('.')]
+                imagepath=os.path.join("cell_application/uploaded_images",imagename)
+                
+                image = Image.open(imagepath+".jpg")
+                npimage=np.array(image)
+                # Get the original size of the image
+                ma=max(npimage.shape[0],npimage.shape[1])
+                yolo_img_resize= (ma*2144) //2592
+                yolo_img_resize=(yolo_img_resize//32)*32 +(yolo_img_resize%32!=0)*32
             
-            new_box=[]
-            crop_dir = lastfolder_path+"/crop_results"
-            sam_dir = lastfolder_path+"/sam_results"
-
-            # Check if the directory already exists
-            if not os.path.exists(crop_dir):
-                # If not, create the directory
-                os.mkdir(crop_dir)
-            if not os.path.exists(sam_dir):
-                # If not, create the directory
-                os.mkdir(sam_dir)
-            boxes = [np.array(row) for row in df1.values]
-            for i in range(len(boxes)):
-                box =copy.copy(boxes[i])
-                padding = 70
-                box[0] = max(0, box[0] - padding)
-                box[1] = max(0, box[1] - padding)
-                box[2] = min(image.width, box[2] + padding)
-                box[3] = min(image.height, box[3] + padding)
-
-                # Crop the image using the bounding box coordinates
-                cropped_image1 = np.array(image.crop(boxes[i]))
-                cropped_image = image.crop(box)
-                cropped_image.save(f'{lastfolder_path}/crop_results/{imagename}{i}.jpg')
-                # Save the cropped image
-                # Calculate the new bounding box coordinates
-                new_box.append(np.array([ padding,  padding,  padding+cropped_image1.shape[1],   padding+cropped_image1.shape[0]]))
-            box = new_box
-            import torch
-            CHECKPOINT_PATH="models_weights/sam_vit_h_4b8939.pth"
-            DEVICE = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
-            MODEL_TYPE = "vit_h"
-            import cv2
+                height, width = yolo_img_resize,yolo_img_resize
+                height_i, width_i=npimage.shape[:2]
+            
+                height_scale = height_i/height
+                width_scale=width_i/width
+                df['x_center'] *= width_i
+                df['y_center'] *= height_i
+                df['width'] *= width_i
+                df['height'] *= height_i
+                    
+                # Calculate the top-left and bottom-right corners of the bounding boxes
+                df1 = pd.DataFrame()
+                df1['xmin'] = df['x_center'] - df['width'] / 2
+                df1['ymin'] = df['y_center'] - df['height'] / 2
+                df1['xmax'] = df['x_center'] + df['width'] / 2
+                df1['ymax'] = df['y_center'] + df['height'] / 2
                 
-            from segment_anything import sam_model_registry, SamAutomaticMaskGenerator, SamPredictor
-            sam = sam_model_registry[MODEL_TYPE](checkpoint=CHECKPOINT_PATH)
-            mask_predictor = SamPredictor(sam)
-            mask_generator = SamAutomaticMaskGenerator(sam)
-            from keras.models import load_model
-            import cv2
-            import supervision as sv
-            # Load the model from the .h5 file
-            model = load_model('models_weights/EfficientNetB3-leukemia-0.96.h5')
-            i=-1
-            image_list=[]
-            cropimagespath=lastfolder_path+"/crop_results"
-            for file in os.listdir(cropimagespath):
-               
-                i+=1
-                image_bgr = cv2.imread(os.path.join(cropimagespath,file))
+                new_box=[]
+                crop_dir = lastfolder_path+"/crop_results"
+                sam_dir = lastfolder_path+"/sam_results"
+
+                # Check if the directory already exists
+                if not os.path.exists(crop_dir):
+                    # If not, create the directory
+                    os.mkdir(crop_dir)
+                if not os.path.exists(sam_dir):
+                    # If not, create the directory
+                    os.mkdir(sam_dir)
+                boxes = [np.array(row) for row in df1.values]
+                for i in range(len(boxes)):
+                    box =copy.copy(boxes[i])
+                    padding = 70
+                    box[0] = max(0, box[0] - padding)
+                    box[1] = max(0, box[1] - padding)
+                    box[2] = min(image.width, box[2] + padding)
+                    box[3] = min(image.height, box[3] + padding)
+
+                    # Crop the image using the bounding box coordinates
+                    cropped_image1 = np.array(image.crop(boxes[i]))
+                    cropped_image = image.crop(box)
+                    cropped_image.save(f'{lastfolder_path}/crop_results/{imagename}{i}.jpg')
+                    # Save the cropped image
+                    # Calculate the new bounding box coordinates
+                    new_box.append(np.array([ padding,  padding,  padding+cropped_image1.shape[1],   padding+cropped_image1.shape[0]]))
+                box = new_box
+                import torch
+                CHECKPOINT_PATH="models_weights/sam_vit_h_4b8939.pth"
+                DEVICE = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
+                MODEL_TYPE = "vit_h"
+                import cv2
+                    
+                from segment_anything import sam_model_registry, SamAutomaticMaskGenerator, SamPredictor
+                sam = sam_model_registry[MODEL_TYPE](checkpoint=CHECKPOINT_PATH)
+                mask_predictor = SamPredictor(sam)
+                mask_generator = SamAutomaticMaskGenerator(sam)
+                from keras.models import load_model
+                import cv2
+                import supervision as sv
+                # Load the model from the .h5 file
+                model = load_model('models_weights/EfficientNetB3-leukemia-0.96.h5')
+                i=-1
+                image_list=[]
+                cropimagespath=lastfolder_path+"/crop_results"
+                for file in os.listdir(cropimagespath):
                 
-
-                image_rgb = cv2.cvtColor(image_bgr, cv2.COLOR_BGR2RGB)
-
-                mask_predictor.set_image(image_rgb)
-
-                masks, scores, logits = mask_predictor.predict(
-                    box=new_box[i],
-                    multimask_output=True
-                )
+                    i+=1
+                    image_bgr = cv2.imread(os.path.join(cropimagespath,file))
                     
 
-                img=np.zeros(image_bgr.shape)
+                    image_rgb = cv2.cvtColor(image_bgr, cv2.COLOR_BGR2RGB)
 
-                img[:,:,:]=[0,0,0]
-                img[masks[2,:,:]]=image_bgr[masks[2,:,:]]
-                #imgtostore=img.copy()
-                #cv2.resize(imgtostore,(300,300))
-                cv2.imwrite(f'{sam_dir}/{imagename}{i}.jpg',img)
-               
-                annotated_image = img.astype(np.uint8)
-               
+                    mask_predictor.set_image(image_rgb)
+
+                    masks, scores, logits = mask_predictor.predict(
+                        box=new_box[i],
+                        multimask_output=True
+                    )
+                        
+
+                    img=np.zeros(image_bgr.shape)
+
+                    img[:,:,:]=[0,0,0]
+                    img[masks[2,:,:]]=image_bgr[masks[2,:,:]]
+                    #imgtostore=img.copy()
+                    #cv2.resize(imgtostore,(300,300))
+                    cv2.imwrite(f'{sam_dir}/{imagename}{i}.jpg',img)
+                
+                    annotated_image = img.astype(np.uint8)
+                
+                
+                    
+                    """sam_result = mask_generator.generate(img)
+                    mask_annotator = sv.MaskAnnotator()
+                    
+                    detections = sv.Detections.from_sam(sam_result=sam_result)
+
+                    annotated_image = mask_annotator.annotate(scene=img.copy(), detections=detections)
+                    print("ok2")"""
+                    
+                
+
+                        
+                    img_size_ly = (300, 300)
+                    
+                    def evaluate(model ,img):
+                        
+
+                        img = cv2.resize(img, img_size_ly)
+                        
+
+                        img = np.expand_dims(img, axis=0)
+                        
+                        # now predict the image
+                        pred = model.predict(img,verbose=0)
+                        print('the shape of prediction is ', pred.shape)
+                        print(pred)
+                
+                        index = np.argmax(pred[0])
+
+                        return index
+                    image_list.append([(evaluate(model,annotated_image)),f'{sam_dir}/{imagename}{i}.jpg'])
             
-                
-                """sam_result = mask_generator.generate(img)
-                mask_annotator = sv.MaskAnnotator()
-                
-                detections = sv.Detections.from_sam(sam_result=sam_result)
+                print(image_list)
+                x_offset = 0 
+                label_dict = {0: "all", 1: "hem"}
+                for image_info in image_list:
+                    label_number, image_path = image_info
+                    label = label_dict[label_number]
+                    pixmap = QtGui.QPixmap(image_path)
 
-                annotated_image = mask_annotator.annotate(scene=img.copy(), detections=detections)
-                print("ok2")"""
-                
-               
+                    # Scale the pixmap without preserving aspect ratio
+                    scaled_pixmap = pixmap.scaled(300, 300)
 
+                    item = QtWidgets.QGraphicsPixmapItem(scaled_pixmap)
+                    item.setPos(x_offset, 0)
+                    self.scenely.addItem(item)
+
+                    # Create a QGraphicsTextItem for the label
+                    text_item = QtWidgets.QGraphicsTextItem(label)
+
+                    # Set the color of the text to white
+                    text_item.setDefaultTextColor(QtGui.QColor('white'))
+
+                    # Calculate the center position of the image for x-coordinate
+                    center_x = x_offset + scaled_pixmap.width() / 2 - text_item.boundingRect().width() / 2
+
+                    # Set the position of the text item on the image and centered horizontally
+                    text_item.setPos(center_x, scaled_pixmap.height() / 2)
                     
-                img_size_ly = (300, 300)
+                    self.scenely.addItem(text_item)
+
+                    # Update x offset for next image
+                    x_offset += scaled_pixmap.width()
+
                 
-                def evaluate(model ,img):
-                    
-
-                    img = cv2.resize(img, img_size_ly)
-                    
-
-                    img = np.expand_dims(img, axis=0)
-                    
-                    # now predict the image
-                    pred = model.predict(img,verbose=0)
-                    print('the shape of prediction is ', pred.shape)
-                    print(pred)
-            
-                    index = np.argmax(pred[0])
-
-                    return index
-                image_list.append([(evaluate(model,annotated_image)),f'{sam_dir}/{imagename}{i}.jpg'])
-        
-            print(image_list)
-            x_offset = 0 
-            label_dict = {0: "all", 1: "hem"}
-            for image_info in image_list:
-                label_number, image_path = image_info
-                label = label_dict[label_number]
-                pixmap = QtGui.QPixmap(image_path)
-
-                # Scale the pixmap without preserving aspect ratio
-                scaled_pixmap = pixmap.scaled(300, 300)
-
-                item = QtWidgets.QGraphicsPixmapItem(scaled_pixmap)
-                item.setPos(x_offset, 0)
-                self.scenely.addItem(item)
-
-                # Create a QGraphicsTextItem for the label
-                text_item = QtWidgets.QGraphicsTextItem(label)
-
-                # Set the color of the text to white
-                text_item.setDefaultTextColor(QtGui.QColor('white'))
-
-                # Calculate the center position of the image for x-coordinate
-                center_x = x_offset + scaled_pixmap.width() / 2 - text_item.boundingRect().width() / 2
-
-                # Set the position of the text item on the image and centered horizontally
-                text_item.setPos(center_x, scaled_pixmap.height() / 2)
-                
-                self.scenely.addItem(text_item)
-
-                # Update x offset for next image
-                x_offset += scaled_pixmap.width()
-
-            
 
                 
 

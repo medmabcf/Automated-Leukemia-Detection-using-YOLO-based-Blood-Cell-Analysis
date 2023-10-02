@@ -8,7 +8,7 @@ The [```White-Blood-Cell-Detection-Dataset```](https://github.com/medmabcf/White
 the ```Training```, ```Testing```, and ```Validation```folders in the working directory.
 
 ## Requirements 
-First, run requirements.txt. After classifying white blood cells, if you want to extract lymphocyte cells and check if the cell is normal or abnormal (acute leukemia blast), you should download the Segment Anything Model (SAM) weights by running the python Download_sam_weights command.
+First, run pip install requirements.txt. After classifying white blood cells, if you want to extract lymphocyte cells and check if the cell is normal or abnormal (acute leukemia blast), you should download the Segment Anything Model (SAM) weights by running the python Download_sam_weights command.
 
 ## Getting Started 
 

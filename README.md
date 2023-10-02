@@ -12,10 +12,9 @@ First, run ```pip install requirements.txt```. After classifying white blood cel
 
 ## Getting Started 
 
-1. Build the cython extension in place 
-```python setup.py build_ext --inplace```
-2. Run detect.py 
-```python detect.py```
+
+1. Run detectcell.py 
+```python detectcell.py```
 
 
 

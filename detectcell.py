@@ -280,7 +280,7 @@ class Ui_Dialog(object):
         
         image_path = "cell_application/uploaded_images/"+upload_name
         
-        model_path="models_weights/bestv7_2.pt"
+        model_path="models_weights/bestv7_red.pt"
         command = f"python ./models/yolov7/detect.py --source {image_path} --weights {model_path} --img {img_size} --conf 0.5 --project {output_red} --save-txt"
         process = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE)
         process.wait()
@@ -306,7 +306,7 @@ class Ui_Dialog(object):
         
         image_path = "cell_application/uploaded_images/"+upload_name
         print(upload_name)
-        model_path="models_weights/bestv7_pl_640_0.3.pt"
+        model_path="models_weights/bestv7_pl_640_3.pt"
         command = f"python ./models/yolov7/detect.py --source {image_path} --weights {model_path} --img {img_size} --conf 0.5 --project {output_pl} --save-txt"
         process = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE)
         process.wait()

@@ -1,0 +1,6 @@
+[submodule "models/segment-anything"]
+	path = models/segment-anything
+	url = https://github.com/facebookresearch/segment-anything.git
+[submodule "models/yolov7"]
+	path = models/yolov7
+	url = https://github.com/WongKinYiu/yolov7.git

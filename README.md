@@ -31,11 +31,14 @@ It will be published soon
 
 ## Blood Cell Detection Output
 
-<p align="center">
-  
-  <img src="https://github.com/medmabcf/Automated-Leukemia-Detection-using-YOLO-based-Blood-Cell-Analysis/blob/main/cell_application/output/Im022_1/Im043_0.jpg" width="500">
-  <img src="https://github.com/medmabcf/Automated-Leukemia-Detection-using-YOLO-based-Blood-Cell-Analysis/blob/main/cell_application/output/Im022_1/Im080_0.jpg" width="500">
+
+  <p align="center">
+  <img src="https://github.com/medmabcf/Automated-Leukemia-Detection-using-YOLO-based-Blood-Cell-Analysis/blob/main/cell_application/output/Im022_1/Im022_1.jpg" width="500">
+    
+  <img src="https://github.com/medmabcf/Automated-Leukemia-Detection-using-YOLO-based-Blood-Cell-Analysis/blob/main/cell_application/output/Im043_0/Im043_0.jpg" width="500">
+  <img src="https://github.com/medmabcf/Automated-Leukemia-Detection-using-YOLO-based-Blood-Cell-Analysis/blob/main/cell_application/output/Im080_0/Im080_0.jpg" width="500">
 </p>
+
 
 
 

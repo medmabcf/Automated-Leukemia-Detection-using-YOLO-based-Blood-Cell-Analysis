@@ -23,10 +23,6 @@ then, run ```pip install -r requirements.txt```. After classifying white blood c
 
 
 
-## Paper
-
-It will be published soon
-
 
 
 ## Blood Cell Detection Output
@@ -39,6 +35,7 @@ It will be published soon
   <img src="https://github.com/medmabcf/Automated-Leukemia-Detection-using-YOLO-based-Blood-Cell-Analysis/blob/main/cell_application/output/Im080_0/Im080_0.jpg" width="500">
    <img src="https://github.com/medmabcf/Automated-Leukemia-Detection-using-YOLO-based-Blood-Cell-Analysis/blob/main/cell_application/output/Im079_0/Im079_0.jpg" width="500">
      <img src="https://github.com/medmabcf/Automated-Leukemia-Detection-using-YOLO-based-Blood-Cell-Analysis/blob/main/cell_application/output/Im079_0/Im079_0.jpg" width="500">
+   <img src="https://github.com/medmabcf/Automated-Leukemia-Detection-using-YOLO-based-Blood-Cell-Analysis/blob/main/cell_application/output/Im076_0/Im076_0.jpg" width="500">
 
    <img src="https://github.com/medmabcf/Automated-Leukemia-Detection-using-YOLO-based-Blood-Cell-Analysis/blob/main/cell_application/outred/Im076_0/Im076_0.jpg" width="500">
    

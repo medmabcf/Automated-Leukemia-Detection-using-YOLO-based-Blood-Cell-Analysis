@@ -1,4 +1,4 @@
-<h2 align="center"># Automated-Leukemia-Detection-using-YOLO-based-Blood-Cell-Analysis<h2>
+<h2 align="center"> Automated-Leukemia-Detection-using-YOLO-based-Blood-Cell-Analysis<h2>
 
 
 

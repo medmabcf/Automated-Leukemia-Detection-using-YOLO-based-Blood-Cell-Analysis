@@ -7,9 +7,32 @@
 The [```White-Blood-Cell-Detection-Dataset```](https://github.com/medmabcf/White-Blood-Cell-Detection-Dataset) has been used for automatic identification and counting of white blood cell types. (It has been modified and augmented) . Download the dataset, unzip and put
 the ```Training```, ```Testing```, and ```Validation```folders in the working directory.
 
-## Requirements 
-First run ```rmdir /S /Q models\yolov7; git clone https://github.com/WongKinYiu/yolov7.git models\yolov7```
-then, run ```pip install -r requirements.txt```. After classifying white blood cells, if you want to extract lymphocyte cells and check if the cell is normal or abnormal (acute leukemia blast), you should download the Segment Anything Model (SAM) weights by running the ```python Download_sam_weights``` command.
+
+## Requirements
+
+Follow these steps to set up your environment:
+
+1. **Clone the YOLOv7 model:**
+    ```shell
+    Remove-Item -Path models\yolov7 -Recurse -Force
+    git clone https://github.com/WongKinYiu/yolov7.git models\yolov7
+    ```
+
+2. **Clone the Segment Anything model:**
+    ```shell
+    Remove-Item -Path models\segment-anything -Recurse -Force
+    git clone https://github.com/facebookresearch/segment-anything.git  models\segment-anything
+    ```
+
+3. **Install the required Python packages:**
+    ```shell
+    pip install -r requirements.txt
+    ```
+
+After you've classified the white blood cells, if you want to extract lymphocyte cells and check if the cell is normal or abnormal (acute leukemia blast), you should download the Segment Anything Model (SAM) weights by running the following command:
+
+```shell
+python Download_sam_weights
 
 ## Getting Started 
 

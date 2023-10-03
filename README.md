@@ -1,7 +1,5 @@
 <h2 align="center"> Automated-Leukemia-Detection-using-YOLO-based-Blood-Cell-Analysis<h2>
 
-
-
 ## Dataset
 
 The [```White-Blood-Cell-Detection-Dataset```](https://github.com/medmabcf/White-Blood-Cell-Detection-Dataset) has been used for automatic identification and counting of white blood cell types. (It has been modified and augmented) . Download the dataset, unzip and put

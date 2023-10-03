@@ -38,6 +38,8 @@ It will be published soon
   <img src="https://github.com/medmabcf/Automated-Leukemia-Detection-using-YOLO-based-Blood-Cell-Analysis/blob/main/cell_application/output/Im043_0/Im043_0.jpg" width="500">
   <img src="https://github.com/medmabcf/Automated-Leukemia-Detection-using-YOLO-based-Blood-Cell-Analysis/blob/main/cell_application/output/Im080_0/Im080_0.jpg" width="500">
    <img src="https://github.com/medmabcf/Automated-Leukemia-Detection-using-YOLO-based-Blood-Cell-Analysis/blob/main/cell_application/output/Im079_0/Im079_0.jpg" width="500">
+   <img src="https://github.com/medmabcf/Automated-Leukemia-Detection-using-YOLO-based-Blood-Cell-Analysis/blob/main/cell_application/outred/Im076_0/Im076_0.jpg" width="500">
+   
 </p>
 
 
